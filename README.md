@@ -1,6 +1,6 @@
 # Addon for Hugo
 
-This is patches for [Hugo](https://github.com/gohugoio/hugo) to add custom (Goldmark) addons like wikilink.
+This is patches for [Hugo](https://github.com/gohugoio/hugo) to add custom (Goldmark) addons like [hugo-addon-wikilink](https://github.com/qgp9/hugo-addon-wikilink).
 
 ## Build
 
@@ -33,7 +33,7 @@ Hugo
 
 ## Registering Addon
 
-* Example: `wikilink` addon
+* Example: [wikilink](https://github.com/qgp9/hugo-addon-wikilink) addon
 
 ```go
 // register-wikilink.go
@@ -67,7 +67,7 @@ func loadWikilinkAddon(pcfg converter.ProviderConfig) ([]goldmark.Extender, []re
 
 ## A Note from the Developer
 
-This addon system was created for personal use (for wikilink) and involves some "creative" Hugo system hacking. Here are some honest thoughts:
+This addon system was created for personal use (for [wikilink](https://github.com/qgp9/hugo-addon-wikilink)) and involves some "creative" Hugo system hacking. Here are some honest thoughts:
 
 1. **No PR intended**: This was built for personal convenience, not as a contribution to Hugo core. The implementation takes some liberties with Hugo's internals that wouldn't pass a proper code review.
 1. **Addon system**: While not strictly necessary, the addon system makes it much easier to add experimental features without cluttering the main codebase. It's like having a sandbox for my wild ideas.
