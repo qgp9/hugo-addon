@@ -1,0 +1,16 @@
+diff --git a/hugolib/addon_hooks.go b/hugolib/addon_hooks.go
+new file mode 100644
+index 000000000..9558aede3
+--- /dev/null
++++ b/hugolib/addon_hooks.go
+@@ -0,0 +1,10 @@
++package hugolib
++
++import (
++	"context"
++	"io"
++)
++
++func (hr hookRendererTemplate) RenderAddon(cctx context.Context, w io.Writer, ctx any) error {
++	return hr.templateHandler.ExecuteWithContext(cctx, hr.templ, w, ctx)
++}

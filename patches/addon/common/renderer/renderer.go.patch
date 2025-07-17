@@ -1,0 +1,55 @@
+diff --git a/addon/common/renderer/renderer.go b/addon/common/renderer/renderer.go
+new file mode 100644
+index 000000000..3b6f722dd
+--- /dev/null
++++ b/addon/common/renderer/renderer.go
+@@ -0,0 +1,49 @@
++package renderer
++
++import (
++	"fmt"
++
++	"github.com/gohugoio/hugo/addon/common"
++	"github.com/gohugoio/hugo/markup/converter/hooks"
++	"github.com/gohugoio/hugo/markup/goldmark/addon/render"
++	"github.com/yuin/goldmark/util"
++)
++
++// GetAddonRenderer finds the appropriate renderer for the given render ID
++func GetAddonRenderer(w util.BufWriter, renderId string) common.AddonRenderer {
++	// Validate renderId format: [a-zA-Z0-9_]+
++	if !IsValidRenderId(renderId) {
++		panic(fmt.Sprintf("invalid renderId format: %s (must match [a-zA-Z0-9_]+)", renderId))
++	}
++
++	ctx, ok := w.(*render.Context)
++	if !ok {
++		return nil
++	}
++
++	h := ctx.RenderContext().GetRenderer(hooks.AddonRendererType, renderId)
++	if h == nil {
++		return nil
++	}
++
++	wlRenderer, ok := h.(common.AddonRenderer)
++	if !ok {
++		return nil
++	}
++
++	return wlRenderer
++}
++
++// IsValidRenderId checks if the renderId matches the pattern [a-zA-Z0-9_]+
++func IsValidRenderId(renderId string) bool {
++	if renderId == "" {
++		return false
++	}
++
++	for _, r := range renderId {
++		if !((r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') || r == '_') {
++			return false
++		}
++	}
++	return true
++}

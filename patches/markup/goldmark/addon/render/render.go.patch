@@ -1,0 +1,16 @@
+diff --git a/markup/goldmark/addon/render/render.go b/markup/goldmark/addon/render/render.go
+new file mode 100644
+index 000000000..0e5b6ea20
+--- /dev/null
++++ b/markup/goldmark/addon/render/render.go
+@@ -0,0 +1,10 @@
++package render
++
++import "github.com/gohugoio/hugo/markup/goldmark/internal/render"
++
++type Context = render.Context
++
++var (
++	GetPageAndPageInner = render.GetPageAndPageInner
++	TextPlain           = render.TextPlain
++)

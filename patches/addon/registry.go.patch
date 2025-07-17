@@ -1,0 +1,71 @@
+diff --git a/addon/registry.go b/addon/registry.go
+new file mode 100644
+index 000000000..c0a2c4810
+--- /dev/null
++++ b/addon/registry.go
+@@ -0,0 +1,65 @@
++// Copyright 2024 The Hugo Authors. All rights reserved.
++//
++// Licensed under the Apache License, Version 2.0 (the "License");
++// you may not use this file except in compliance with the License.
++// You may obtain a copy of the License at
++// http://www.apache.org/licenses/LICENSE-2.0
++//
++// Unless required by applicable law or agreed to in writing, software
++// distributed under the License is distributed on an "AS IS" BASIS,
++// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++// See the License for the specific language governing permissions and
++// limitations under the License.
++
++package addon
++
++import (
++	"strings"
++
++	"github.com/gohugoio/hugo/markup/converter"
++	"github.com/yuin/goldmark"
++	"github.com/yuin/goldmark/renderer"
++)
++
++// AddonLoader defines a function that can load extensions based on configuration.
++type AddonLoader func(pcfg converter.ProviderConfig) ([]goldmark.Extender, []renderer.Option, error)
++
++// AddonRegistry holds all registered extension loaders.
++type AddonRegistry struct {
++	loaders []AddonLoader
++	names   []string
++}
++
++var (
++	// Global addon registry instance.
++	addonRegistry = &AddonRegistry{
++		loaders: make([]AddonLoader, 0),
++		names:   make([]string, 0),
++	}
++)
++
++// RegisterAddon registers a new addon loader.
++func RegisterAddon(loader AddonLoader, name string) {
++	addonRegistry.loaders = append(addonRegistry.loaders, loader)
++	addonRegistry.names = append(addonRegistry.names, name)
++}
++
++// LoadAddons loads all registered addons.
++func LoadAddons(pcfg converter.ProviderConfig, extensions *[]goldmark.Extender, rendererOptions *[]renderer.Option) error {
++	for _, loader := range addonRegistry.loaders {
++		exts, renderOpts, err := loader(pcfg)
++		if err != nil {
++			return err
++		}
++		*extensions = append(*extensions, exts...)
++		*rendererOptions = append(*rendererOptions, renderOpts...)
++	}
++	return nil
++}
++
++func GetAddonBuildTagsString() string {
++	if len(addonRegistry.names) == 0 {
++		return ""
++	}
++	return "+" + strings.Join(addonRegistry.names, "+")
++}

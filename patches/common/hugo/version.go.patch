@@ -1,0 +1,21 @@
+diff --git a/common/hugo/version.go b/common/hugo/version.go
+index cf5988840..e736c2525 100644
+--- a/common/hugo/version.go
++++ b/common/hugo/version.go
+@@ -21,6 +21,7 @@ import (
+ 	"strconv"
+ 	"strings"
+ 
++	"github.com/gohugoio/hugo/addon"
+ 	"github.com/gohugoio/hugo/compare"
+ 	"github.com/spf13/cast"
+ )
+@@ -156,6 +157,8 @@ func BuildVersionString() string {
+ 		version += "+withdeploy"
+ 	}
+ 
++	version += addon.GetAddonBuildTagsString()
++
+ 	osArch := bi.GoOS + "/" + bi.GoArch
+ 
+ 	date := bi.RevisionTime

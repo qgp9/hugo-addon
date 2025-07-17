@@ -1,0 +1,12 @@
+diff --git a/markup/converter/hooks/hooks.go b/markup/converter/hooks/hooks.go
+index 1fc513acb..2dc96fc4e 100644
+--- a/markup/converter/hooks/hooks.go
++++ b/markup/converter/hooks/hooks.go
+@@ -218,6 +218,7 @@ const (
+ 	PassthroughRendererType
+ 	BlockquoteRendererType
+ 	TableRendererType
++	AddonRendererType
+ )
+ 
+ type GetRendererFunc func(t RendererType, id any) any

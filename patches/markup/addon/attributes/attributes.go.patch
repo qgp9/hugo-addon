@@ -1,0 +1,13 @@
+diff --git a/markup/addon/attributes/attributes.go b/markup/addon/attributes/attributes.go
+new file mode 100644
+index 000000000..546f21048
+--- /dev/null
++++ b/markup/addon/attributes/attributes.go
+@@ -0,0 +1,7 @@
++package attributes
++
++import "github.com/gohugoio/hugo/markup/internal/attributes"
++
++type AttributesHolder = attributes.AttributesHolder
++
++var Empty = attributes.Empty

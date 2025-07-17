@@ -1,0 +1,16 @@
+diff --git a/hugolib/page__per_output.go b/hugolib/page__per_output.go
+index 15e9a890c..9e09652dc 100644
+--- a/hugolib/page__per_output.go
++++ b/hugolib/page__per_output.go
+@@ -302,6 +302,11 @@ func (pco *pageContentOutput) initRenderHooks() error {
+ 				if id != nil {
+ 					layoutDescriptor.Variant2 = id.(string)
+ 				}
++			case hooks.AddonRendererType:
++				layoutDescriptor.Variant1 = "addon"
++				if id != nil {
++					layoutDescriptor.Variant2 = id.(string)
++				}
+ 			}
+ 
+ 			renderHookConfig := pco.po.p.s.conf.Markup.Goldmark.RenderHooks

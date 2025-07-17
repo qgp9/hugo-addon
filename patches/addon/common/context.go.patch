@@ -1,0 +1,82 @@
+diff --git a/addon/common/context.go b/addon/common/context.go
+new file mode 100644
+index 000000000..0e7e3c80e
+--- /dev/null
++++ b/addon/common/context.go
+@@ -0,0 +1,76 @@
++package common
++
++import (
++	"github.com/gohugoio/hugo/common/types/hstring"
++	"github.com/gohugoio/hugo/markup/addon/attributes"
++)
++
++// linkContext is copied from render_hooks.go for consistency
++type LinkContext struct {
++	page        any
++	pageInner   any
++	destination string
++	title       string
++	text        hstring.HTML
++	plainText   string
++	*attributes.AttributesHolder
++}
++
++func NewLinkContext(page any, pageInner any, destination string, title string, text hstring.HTML, plainText string, attributes *attributes.AttributesHolder) LinkContext {
++	return LinkContext{
++		page:             page,
++		pageInner:        pageInner,
++		destination:      destination,
++		title:            title,
++		text:             text,
++		plainText:        plainText,
++		AttributesHolder: attributes,
++	}
++}
++
++func (ctx LinkContext) Destination() string {
++	return ctx.destination
++}
++
++func (ctx LinkContext) Page() any {
++	return ctx.page
++}
++
++func (ctx LinkContext) PageInner() any {
++	return ctx.pageInner
++}
++
++func (ctx LinkContext) Text() hstring.HTML {
++	return ctx.text
++}
++
++func (ctx LinkContext) PlainText() string {
++	return ctx.plainText
++}
++
++func (ctx LinkContext) Title() string {
++	return ctx.title
++}
++
++// imageLinkContext is copied from render_hooks.go for consistency
++type ImageLinkContext struct {
++	LinkContext
++	ordinal int
++	isBlock bool
++}
++
++func NewImageLinkContext(linkContext LinkContext, ordinal int, isBlock bool) ImageLinkContext {
++	return ImageLinkContext{
++		LinkContext: linkContext,
++		ordinal:     ordinal,
++		isBlock:     isBlock,
++	}
++}
++
++func (ctx ImageLinkContext) IsBlock() bool {
++	return ctx.isBlock
++}
++
++func (ctx ImageLinkContext) Ordinal() int {
++	return ctx.ordinal
++}

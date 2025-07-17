@@ -1,0 +1,60 @@
+diff --git a/addon/common/utils.go b/addon/common/utils.go
+new file mode 100644
+index 000000000..e3503060b
+--- /dev/null
++++ b/addon/common/utils.go
+@@ -0,0 +1,54 @@
++package common
++
++import (
++	"reflect"
++
++	"github.com/gohugoio/hugo/common/maps"
++	"github.com/mitchellh/mapstructure"
++)
++
++//=======================================================================
++// Helper functions
++//=======================================================================
++
++func GetConfigField(cfg any, fieldName string) (any, bool) {
++	v := reflect.ValueOf(cfg)
++	if v.Kind() == reflect.Ptr {
++		v = v.Elem()
++	}
++	if v.Kind() != reflect.Struct {
++		return nil, false
++	}
++
++	f := v.FieldByName(fieldName)
++	if f.IsValid() && f.CanInterface() {
++		return f.Interface(), true
++	}
++	return nil, false
++}
++
++func GetParamsFromConfig(cfg any) (maps.Params, bool) {
++	params, ok := GetConfigField(cfg, "Params")
++	if !ok {
++		return nil, false
++	}
++	paramsMap, ok := params.(maps.Params)
++	if !ok {
++		return nil, false
++	}
++	return paramsMap, true
++}
++
++func GetAddonParams(cfg any, name string) any {
++	params, ok := GetParamsFromConfig(cfg)
++	if !ok {
++		return nil
++	}
++	return params.GetNested("addon", name)
++}
++
++func GetAddonConfig(cfg any, name string, configStruct any) any {
++	params := GetAddonParams(cfg, name)
++	// Use mapstructure to decode the wikilink configuration
++	return mapstructure.WeakDecode(params, configStruct)
++}

@@ -1,0 +1,16 @@
+diff --git a/addon/common/common.go b/addon/common/common.go
+new file mode 100644
+index 000000000..1e1c58acd
+--- /dev/null
++++ b/addon/common/common.go
+@@ -0,0 +1,10 @@
++package common
++
++import (
++	"context"
++	"io"
++)
++
++type AddonRenderer interface {
++	RenderAddon(cctx context.Context, w io.Writer, ctx any) error
++}
